@@ -11,7 +11,7 @@ use alloc::{
     vec,
     vec::Vec,
 };
-
+use std::io::Write;
 use crate::buf::{IntoIter, UninitSlice};
 use crate::bytes::Vtable;
 #[allow(unused)]
@@ -1322,6 +1322,18 @@ impl Borrow<[u8]> for BytesMut {
 impl BorrowMut<[u8]> for BytesMut {
     fn borrow_mut(&mut self) -> &mut [u8] {
         self.as_mut()
+    }
+}
+
+impl Write for BytesMut {
+    fn write(&mut self, buf: &[u8]) -> std::io::Result<usize> {
+        self.write(buf)
+    }
+
+    fn flush(&mut self) -> std::io::Result<()> {
+        // nothing to do, all the data written to a BytesMut is flushed
+        // the instant it is written.
+        Ok(())
     }
 }
 
