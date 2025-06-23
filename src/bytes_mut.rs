@@ -1327,7 +1327,8 @@ impl BorrowMut<[u8]> for BytesMut {
 
 impl Write for BytesMut {
     fn write(&mut self, buf: &[u8]) -> std::io::Result<usize> {
-        self.write(buf)
+        self.put_slice(buf);
+        Ok(buf.len())
     }
 
     fn flush(&mut self) -> std::io::Result<()> {
